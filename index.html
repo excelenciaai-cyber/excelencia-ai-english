@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="theme-color" content="#1a1f3a"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>Excelência AI English</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#1a1f3a;--navy2:#252b4a;
+  --blue:#3b5bdb;--blue2:#4c6ef5;
+  --green:#00c853;--green2:#69db7c;
+  --gold:#ffd43b;--coral:#ff6b6b;
+  --purple:#845ef7;--white:#ffffff;
+  --gray50:#f8f9fa;--gray100:#f1f3f5;--gray200:#e9ecef;
+  --gray400:#ced4da;--gray600:#868e96;--gray800:#343a40;
+  --text:#1a1f3a;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--r24:24px;--r999:999px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:'Inter',sans-serif;background:var(--gray100);color:var(--text);min-height:100dvh;overflow-x:hidden;}
+
+/* SCREENS */
+.screen{display:none;min-height:100dvh}
+.screen.active{display:flex;flex-direction:column}
+
+/* ONBOARDING */
+#screen-onboarding{
+  background:linear-gradient(160deg,var(--navy) 0%,#2d3561 60%,#1a2a5e 100%);
+  align-items:center;justify-content:center;
+  padding:40px 28px;text-align:center;position:relative;overflow:hidden;
+}
+#screen-onboarding::before{
+  content:'';position:absolute;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(59,91,219,.35) 0%,transparent 70%);
+  top:-100px;right:-80px;
+}
+.onboard-badge{
+  background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);
+  color:var(--green2);font-size:12px;font-weight:600;
+  padding:6px 16px;border-radius:var(--r999);
+  display:inline-block;margin-bottom:24px;letter-spacing:.5px;text-transform:uppercase;
+}
+.onboard-logo{margin-bottom:32px}
+.onboard-logo .logo-ring{
+  width:96px;height:96px;
+  background:linear-gradient(135deg,var(--blue),var(--green));
+  border-radius:var(--r24);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;box-shadow:0 0 0 8px rgba(59,91,219,.20);
+}
+.onboard-logo h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;color:var(--white);line-height:1.15;}
+.onboard-logo h1 span{color:var(--green2)}
+.onboard-logo p{color:rgba(255,255,255,.55);font-size:13px;margin-top:6px}
+.onboard-cards{display:flex;flex-direction:column;gap:12px;width:100%;max-width:380px;margin:24px auto}
+.onboard-card{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--r16);padding:16px 18px;
+  display:flex;align-items:center;gap:16px;text-align:left;
+}
+.onboard-card-icon{width:44px;height:44px;border-radius:var(--r12);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;}
+.onboard-card h3{color:var(--white);font-size:14px;font-weight:600;margin-bottom:2px}
+.onboard-card p{color:rgba(255,255,255,.50);font-size:12px;line-height:1.4}
+.btn-primary{
+  width:100%;max-width:380px;
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:var(--white);border:none;border-radius:var(--r16);
+  padding:16px;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:16px;font-weight:700;cursor:pointer;margin-top:24px;
+  box-shadow:0 4px 20px rgba(59,91,219,.45);transition:transform .15s,box-shadow .15s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(59,91,219,.50)}
+.btn-primary:active{transform:translateY(0)}
+.onboard-terms{color:rgba(255,255,255,.30);font-size:11px;margin-top:16px}
+
+/* LEVEL SELECT */
+#screen-level{background:var(--gray100);padding:0;}
+.level-header{background:linear-gradient(135deg,var(--navy),#2d3561);padding:48px 24px 32px;text-align:center;}
+.level-header h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:8px;}
+.level-header p{color:rgba(255,255,255,.60);font-size:14px}
+.level-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:24px 20px;}
+.level-card{
+  background:var(--white);border:2px solid transparent;border-radius:var(--r16);
+  padding:20px 16px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);
+}
+.level-card:hover,.level-card.selected{border-color:var(--blue);box-shadow:0 0 0 4px rgba(59,91,219,.12);}
+.level-card .lc-icon{font-size:32px;margin-bottom:10px}
+.level-card h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.level-card p{font-size:11px;color:var(--gray600)}
+.level-card .lc-tag{display:inline-block;background:var(--gray100);color:var(--blue);font-size:10px;font-weight:600;padding:3px 10px;border-radius:var(--r999);margin-top:8px;}
+
+/* MAIN APP */
+#screen-app{background:var(--gray100);padding-bottom:72px}
+
+/* TOPBAR */
+.topbar{
+  background:var(--white);padding:14px 20px 10px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;box-shadow:0 1px 0 var(--gray200);
+}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.topbar-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:var(--r8);display:flex;align-items:center;justify-content:center;}
+.topbar-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:var(--navy);}
+.topbar-title span{color:var(--blue)}
+.topbar-stats{display:flex;align-items:center;gap:12px}
+.stat-pill{display:flex;align-items:center;gap:5px;background:var(--gray100);border-radius:var(--r999);padding:5px 11px;font-size:13px;font-weight:600;color:var(--gray800);}
+.stat-pill.streak{color:#ff6b2b}
+.stat-pill.xp{color:var(--blue)}
+.stat-pill.coins{color:#e67700}
+
+/* TABS */
+.tab-section{display:none}
+.tab-section.active{display:block}
+
+/* HOME */
+.home-hero{background:linear-gradient(135deg,var(--blue) 0%,#2244cc 100%);padding:24px 20px 20px;position:relative;overflow:hidden;}
+.home-hero::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.06);right:-40px;top:-60px;}
+.hero-greeting{color:rgba(255,255,255,.75);font-size:13px;margin-bottom:4px}
+.hero-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:16px;}
+.hero-xp-bar{background:rgba(255,255,255,.20);border-radius:var(--r999);height:8px;margin-bottom:6px}
+.hero-xp-fill{height:100%;border-radius:var(--r999);background:linear-gradient(90deg,var(--green2),var(--gold));transition:width .8s ease;}
+.hero-xp-label{display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.65)}
+
+/* STREAK BANNER */
+.streak-banner{
+  margin:16px 20px 0;
+  background:linear-gradient(135deg,#ff6b2b,#e63946);
+  border-radius:var(--r16);padding:14px 18px;
+  display:flex;align-items:center;gap:14px;
+  box-shadow:0 4px 16px rgba(230,57,70,.28);
+}
+.streak-banner .sb-icon{font-size:28px}
+.streak-banner h3{color:var(--white);font-size:14px;font-weight:700;margin-bottom:2px}
+.streak-banner p{color:rgba(255,255,255,.75);font-size:11px}
+.streak-banner .sb-count{margin-left:auto;font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--white);}
+
+/* SECTION HEADER */
+.section-hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 10px;}
+.section-hdr h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--navy);}
+.section-hdr a{font-size:13px;color:var(--blue);font-weight:600;text-decoration:none}
+
+/* MISSIONS */
+.missions-list{padding:0 20px;display:flex;flex-direction:column;gap:10px}
+.mission-card{
+  background:var(--white);border-radius:var(--r16);padding:14px 16px;
+  display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm);
+  cursor:pointer;transition:transform .15s;
+}
+.mission-card:active{transform:scale(.98)}
+.mc-icon{width:44px;height:44px;border-radius:var(--r12);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.mc-body{flex:1}
+.mc-body h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:3px}
+.mc-body p{font-size:11px;color:var(--gray600)}
+.mc-progress{margin-top:8px;background:var(--gray200);border-radius:var(--r999);height:5px}
+.mc-progress-fill{height:100%;border-radius:var(--r999);background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .6s}
+.mc-xp{background:linear-gradient(135deg,var(--blue),var(--purple));color:var(--white);font-size:11px;font-weight:700;padding:4px 10px;border-radius:var(--r999);white-space:nowrap;flex-shrink:0;}
+
+/* MODULES */
+.modules-scroll{display:flex;gap:14px;padding:0 20px 4px;overflow-x:auto;scrollbar-width:none;}
+.modules-scroll::-webkit-scrollbar{display:none}
+.module-card{
+  background:var(--white);border-radius:var(--r16);padding:18px 16px;
+  min-width:160px;flex-shrink:0;box-shadow:var(--shadow-sm);
+  cursor:pointer;transition:transform .15s;position:relative;overflow:hidden;
+}
+.module-card:active{transform:scale(.97)}
+.module-card .mc-top{width:48px;height:48px;border-radius:var(--r12);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:12px;}
+.module-card h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.module-card p{font-size:11px;color:var(--gray600);margin-bottom:10px}
+.module-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 10px;border-radius:var(--r999);}
+.module-card .mc-lock{position:absolute;top:12px;right:12px;font-size:14px;opacity:.4;}
+
+/* CHAT TAB */
+#tab-chat{display:none;flex-direction:column;height:calc(100dvh - 72px);overflow:hidden;}
+#tab-chat.active{display:flex}
+.chat-topbar{background:var(--white);padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--gray200);flex-shrink:0;}
+.tutor-avatar{width:42px;height:42px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;position:relative;}
+.tutor-online{width:10px;height:10px;background:var(--green);border:2px solid var(--white);border-radius:50%;position:absolute;bottom:0;right:0;}
+.tutor-info h3{font-size:15px;font-weight:700;color:var(--navy)}
+.tutor-info p{font-size:11px;color:var(--green);font-weight:500}
+.chat-subject-pills{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;background:var(--white);border-bottom:1px solid var(--gray200);flex-shrink:0;}
+.chat-subject-pills::-webkit-scrollbar{display:none}
+.subject-pill{white-space:nowrap;background:var(--gray100);color:var(--gray800);border:1.5px solid var(--gray200);border-radius:var(--r999);padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;flex-shrink:0;}
+.subject-pill.active,.subject-pill:hover{background:var(--blue);color:var(--white);border-color:var(--blue);}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;}
+.msg-row{display:flex;align-items:flex-end;gap:8px}
+.msg-row.user{flex-direction:row-reverse}
+.msg-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--green));display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.msg-avatar.user-av{background:linear-gradient(135deg,var(--purple),var(--coral))}
+.msg-bubble{max-width:76%;padding:12px 15px;border-radius:18px;font-size:14px;line-height:1.55;animation:fadeUp .22s ease;}
+.msg-bubble.ai{background:var(--white);color:var(--text);border-bottom-left-radius:4px;box-shadow:var(--shadow-sm);}
+.msg-bubble.user{background:linear-gradient(135deg,var(--blue),var(--blue2));color:var(--white);border-bottom-right-radius:4px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.typing-row{display:flex;align-items:flex-end;gap:8px}
+.typing-dots-wrap{background:var(--white);border-radius:18px;border-bottom-left-radius:4px;padding:12px 16px;display:flex;gap:5px;box-shadow:var(--shadow-sm);}
+.typing-dots-wrap span{width:7px;height:7px;border-radius:50%;background:var(--blue2);animation:bounce 1.2s infinite;}
+.typing-dots-wrap span:nth-child(2){animation-delay:.2s}
+.typing-dots-wrap span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+.chat-input-wrap{background:var(--white);border-top:1px solid var(--gray200);padding:12px 16px;display:flex;gap:10px;align-items:flex-end;flex-shrink:0;}
+#chat-input{flex:1;border:1.5px solid var(--gray200);border-radius:22px;padding:10px 16px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);outline:none;resize:none;min-height:42px;max-height:120px;line-height:1.4;transition:border-color .18s;}
+#chat-input:focus{border-color:var(--blue)}
+#chat-input::placeholder{color:var(--gray400)}
+.chat-send-btn{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s;}
+.chat-send-btn:hover{transform:scale(1.08)}
+.chat-send-btn:active{transform:scale(.94)}
+.chat-send-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* PROGRESS TAB */
+.progress-hero{background:linear-gradient(135deg,var(--purple),#5b21b6);padding:28px 20px 24px;}
+.ph-top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.ph-avatar{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.20);display:flex;align-items:center;justify-content:center;font-size:28px;border:3px solid rgba(255,255,255,.40);}
+.ph-info h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--white);}
+.ph-info p{color:rgba(255,255,255,.65);font-size:13px;margin-top:2px}
+.level-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);color:var(--gold);font-size:11px;font-weight:700;padding:4px 12px;border-radius:var(--r999);margin-top:8px;}
+.ph-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ph-stat{background:rgba(255,255,255,.12);border-radius:var(--r12);padding:12px;text-align:center;}
+.ph-stat .ps-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--white);}
+.ph-stat .ps-lbl{font-size:10px;color:rgba(255,255,255,.55);margin-top:2px}
+.skills-section{padding:20px}
+.skill-row{margin-bottom:14px}
+.skill-row-top{display:flex;justify-content:space-between;margin-bottom:6px}
+.skill-name{font-size:13px;font-weight:600;color:var(--navy)}
+.skill-pct{font-size:12px;color:var(--gray600)}
+.skill-bar{height:8px;background:var(--gray200);border-radius:var(--r999)}
+.skill-fill{height:100%;border-radius:var(--r999);transition:width 1s ease}
+.badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:0 20px 20px;}
+.badge-item{background:var(--white);border-radius:var(--r12);padding:14px 8px;text-align:center;box-shadow:var(--shadow-sm);}
+.badge-item .bi-icon{font-size:26px;margin-bottom:6px}
+.badge-item h4{font-size:10px;font-weight:600;color:var(--navy);line-height:1.3}
+.badge-item.locked{opacity:.4}
+
+/* RANKING TAB */
+.ranking-hero{background:linear-gradient(135deg,#e67700,#f59f00);padding:24px 20px;text-align:center;}
+.ranking-hero h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:4px;}
+.ranking-hero p{color:rgba(255,255,255,.75);font-size:13px}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:12px;padding:24px 20px 0}
+.podium-place{text-align:center;flex:1;max-width:100px}
+.podium-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 8px;border:3px solid transparent;}
+.podium-place.first .podium-avatar{width:64px;height:64px;font-size:28px;border-color:var(--gold);box-shadow:0 0 0 4px rgba(255,212,59,.25);}
+.podium-name{font-size:12px;font-weight:600;color:var(--navy)}
+.podium-xp{font-size:11px;color:var(--gray600)}
+.podium-block{border-radius:var(--r8) var(--r8) 0 0;margin-top:8px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--white)}
+.podium-place.first .podium-block{height:72px;background:linear-gradient(180deg,#ffd43b,#f59f00)}
+.podium-place.second .podium-block{height:52px;background:linear-gradient(180deg,#adb5bd,#868e96)}
+.podium-place.third .podium-block{height:40px;background:linear-gradient(180deg,#cd7f32,#a0522d)}
+.ranking-list{padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+.rank-item{background:var(--white);border-radius:var(--r16);padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm);}
+.rank-item.me{border:2px solid var(--blue);background:#f0f4ff}
+.rank-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--gray400);width:24px;text-align:center;}
+.rank-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.rank-info{flex:1}
+.rank-info h4{font-size:14px;font-weight:600;color:var(--navy)}
+.rank-info p{font-size:11px;color:var(--gray600)}
+.rank-xp{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--blue)}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--gray200);display:flex;align-items:center;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:100;box-shadow:0 -4px 16px rgba(0,0,0,.06);}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;cursor:pointer;transition:transform .15s;}
+.nav-item:active{transform:scale(.92)}
+.nav-icon{font-size:22px;line-height:1}
+.nav-label{font-size:9px;font-weight:600;color:var(--gray600);letter-spacing:.3px;text-transform:uppercase}
+.nav-item.active .nav-label{color:var(--blue)}
+.nav-item.active .nav-icon{transform:scale(1.1)}
+.nav-center-btn{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(59,91,219,.45);margin-top:-10px;font-size:26px;cursor:pointer;transition:transform .15s;}
+.nav-center-btn:active{transform:scale(.94)}
+
+/* EXERCISE MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex}
+.modal-sheet{background:var(--white);border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:0 0 32px;max-height:85dvh;overflow-y:auto;animation:slideUp .28s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;background:var(--gray200);border-radius:var(--r999);margin:14px auto 20px;}
+.modal-inner{padding:0 24px}
+.ex-type{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;}
+.ex-q{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--navy);line-height:1.3;margin-bottom:24px;}
+.ex-options{display:flex;flex-direction:column;gap:10px}
+.ex-opt{background:var(--gray100);border:2px solid var(--gray200);border-radius:var(--r12);padding:14px 16px;font-size:15px;font-weight:500;color:var(--navy);cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:12px;}
+.ex-opt:hover{border-color:var(--blue);background:#f0f4ff}
+.ex-opt.correct{border-color:var(--green);background:#f0fff4;color:#2d6a4f}
+.ex-opt.wrong{border-color:var(--coral);background:#fff5f5;color:#c92a2a}
+.ex-opt-letter{width:28px;height:28px;border-radius:50%;background:var(--gray200);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.ex-feedback{margin-top:16px;border-radius:var(--r12);padding:14px 16px;display:none;}
+.ex-feedback.show{display:block}
+.ex-feedback.correct-fb{background:#f0fff4;border:1px solid #69db7c}
+.ex-feedback.wrong-fb{background:#fff5f5;border:1px solid var(--coral)}
+.ex-feedback h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.ex-feedback p{font-size:13px;color:var(--gray600);line-height:1.4}
+.ex-next-btn{width:100%;margin-top:16px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:var(--white);border:none;border-radius:var(--r12);padding:15px;font-size:16px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;display:none;transition:transform .15s;}
+.ex-next-btn.show{display:block}
+.ex-next-btn:active{transform:scale(.98)}
+
+/* XP TOAST */
+.xp-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);background:linear-gradient(135deg,var(--blue),var(--purple));color:var(--white);border-radius:var(--r999);padding:10px 22px;font-size:14px;font-weight:700;box-shadow:var(--shadow-lg);z-index:300;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;}
+.xp-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* UTILS */
+.bg-blue{background:rgba(59,91,219,.12)}
+.bg-green{background:rgba(0,200,83,.12)}
+.bg-gold{background:rgba(255,212,59,.15)}
+.bg-coral{background:rgba(255,107,107,.12)}
+.bg-purple{background:rgba(132,94,247,.12)}
+</style>
+</head>
+<body>
+
+<!-- ONBOARDING -->
+<div id="screen-onboarding" class="screen active">
+  <div class="onboard-badge">🌍 Feito para Angola</div>
+  <div class="onboard-logo">
+    <div class="logo-ring">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <path d="M24 8L28 18H40L31 25L34 36L24 29L14 36L17 25L8 18H20L24 8Z" fill="white" opacity=".9"/>
+      </svg>
+    </div>
+    <h1>Excelência<br><span>AI English</span></h1>
+    <p>O teu professor de inglês disponível 24h</p>
+  </div>
+  <div class="onboard-cards">
+    <div class="onboard-card">
+      <div class="onboard-card-icon" style="background:rgba(59,91,219,.20)">🧠</div>
+      <div><h3>Tutor IA Personalizado</h3><p>Aprende ao teu ritmo com IA que se adapta ao teu nível</p></div>
+    </div>
+    <div class="onboard-card">
+      <div class="onboard-card-icon" style="background:rgba(0,200,83,.20)">🏆</div>
+      <div><h3>Gamificação Real</h3><p>XP, streak, medalhas e ranking com outros estudantes</p></div>
+    </div>
+    <div class="onboard-card">
+      <div class="onboard-card-icon" style="background:rgba(255,212,59,.20)">📜</div>
+      <div><h3>Certificação Oficial</h3><p>Certificados reconhecidos ao concluir cada módulo</p></div>
+    </div>
+  </div>
+  <button class="btn-primary" onclick="goToLevelSelect()">Começar Gratuitamente →</button>
+  <p class="onboard-terms">Ao continuar aceitas os Termos de Uso</p>
+</div>
+
+<!-- LEVEL SELECT -->
+<div id="screen-level" class="screen">
+  <div class="level-header">
+    <h2>Qual é o teu nível?</h2>
+    <p>Escolhe para personalizarmos o teu percurso</p>
+  </div>
+  <div class="level-grid">
+    <div class="level-card" onclick="selectLevel('A1','Iniciante')">
+      <div class="lc-icon">🌱</div>
+      <h3>A1 — Iniciante</h3>
+      <p>Começar do zero</p>
+      <div class="lc-tag">Básico</div>
+    </div>
+    <div class="level-card" onclick="selectLevel('A2','Elementar')">
+      <div class="lc-icon">📗</div>
+      <h3>A2 — Elementar</h3>
+      <p>Conheço algumas palavras</p>
+      <div class="lc-tag">Elementar</div>
+    </div>
+    <div class="level-card" onclick="selectLevel('B1','Intermédio')">
+      <div class="lc-icon">🚀</div>
+      <h3>B1 — Intermédio</h3>
+      <p>Consigo comunicar</p>
+      <div class="lc-tag">Intermédio</div>
+    </div>
+    <div class="level-card" onclick="selectLevel('B2','Avançado')">
+      <div class="lc-icon">⭐</div>
+      <h3>B2 — Avançado</h3>
+      <p>Quero aperfeiçoar</p>
+      <div class="lc-tag">Avançado</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="screen-app" class="screen">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">
+        <svg width="18" height="18" viewBox="0 0 48 48" fill="none"><path d="M24 8L28 18H40L31 25L34 36L24 29L14 36L17 25L8 18H20L24 8Z" fill="white" opacity=".9"/></svg>
+      </div>
+      <div class="topbar-title">Excelência <span>AI</span></div>
+    </div>
+    <div class="topbar-stats">
+      <div class="stat-pill streak">🔥 <span id="streak-val">0</span></div>
+      <div class="stat-pill xp">⚡ <span id="xp-val">0</span></div>
+      <div class="stat-pill coins">🪙 <span id="coins-val">0</span></div>
+    </div>
+  </div>
+
+  <!-- HOME TAB -->
+  <div id="tab-home" class="tab-section active">
+    <div class="home-hero">
+      <div class="hero-greeting">Bem-vindo de volta 👋</div>
+      <div class="hero-name" id="hero-name">Estudante</div>
+      <div class="hero-xp-bar"><div class="hero-xp-fill" id="xp-bar" style="width:0%"></div></div>
+      <div class="hero-xp-label"><span id="xp-cur">0 XP</span><span id="xp-max">2000 XP</span></div>
+    </div>
+
+    <div class="streak-banner">
+      <div class="sb-icon">🔥</div>
+      <div><h3>Sequência activa!</h3><p>Continua a estudar todos os dias</p></div>
+      <div class="sb-count" id="streak-banner-val">0</div>
+    </div>
+
+    <div class="section-hdr"><h2>Missões do Dia</h2><a href="#" onclick="return false">Ver todas</a></div>
+    <div class="missions-list">
+      <div class="mission-card" onclick="openExercise('grammar')">
+        <div class="mc-icon bg-blue">📝</div>
+        <div class="mc-body">
+          <h4>Praticar Gramática</h4>
+          <p>5 exercícios gerados por IA</p>
+          <div class="mc-progress"><div class="mc-progress-fill" style="width:0%"></div></div>
+        </div>
+        <div class="mc-xp">+50 XP</div>
+      </div>
+      <div class="mission-card" onclick="openExercise('vocab')">
+        <div class="mc-icon bg-green">📚</div>
+        <div class="mc-body">
+          <h4>Expandir Vocabulário</h4>
+          <p>5 palavras novas com IA</p>
+          <div class="mc-progress"><div class="mc-progress-fill" style="width:0%"></div></div>
+        </div>
+        <div class="mc-xp">+30 XP</div>
+      </div>
+    </div>
+
+    <div class="section-hdr" style="margin-top:8px"><h2>Os Teus Módulos</h2><a href="#" onclick="return false">Ver todos</a></div>
+    <div class="modules-scroll">
+      <div class="module-card" onclick="openExercise('grammar')">
+        <div class="mc-top bg-blue">📝</div>
+        <h3>Gramática</h3>
+        <p>Present & Past tenses</p>
+        <div class="module-pill bg-blue" style="color:var(--blue)">65% completo</div>
+      </div>
+      <div class="module-card" onclick="openExercise('vocab')">
+        <div class="mc-top bg-green">📚</div>
+        <h3>Vocabulário</h3>
+        <p>Business & Daily English</p>
+        <div class="module-pill bg-green" style="color:#2d6a4f">42% completo</div>
+      </div>
+      <div class="module-card" onclick="switchTab('chat')">
+        <div class="mc-top bg-purple">💬</div>
+        <h3>Conversação</h3>
+        <p>Situações do dia a dia</p>
+        <div class="module-pill bg-purple" style="color:var(--purple)">28% completo</div>
+      </div>
+      <div class="module-card">
+        <div class="mc-top bg-gold">🎧</div>
+        <h3>Listening</h3>
+        <p>Compreensão auditiva</p>
+        <div class="module-pill" style="background:#fff3bf;color:#e67700">Em breve</div>
+        <div class="mc-lock">🔒</div>
+      </div>
+    </div>
+    <div style="height:24px"></div>
+  </div>
+
+  <!-- CHAT TAB -->
+  <div id="tab-chat" class="tab-section">
+    <div class="chat-topbar">
+      <div class="tutor-avatar">🤖<div class="tutor-online"></div></div>
+      <div class="tutor-info">
+        <h3>Alex — AI English Tutor</h3>
+        <p>● Online agora · Pronto para praticar</p>
+      </div>
+    </div>
+    <div class="chat-subject-pills">
+      <div class="subject-pill active" onclick="setSubject(this,'general')">💬 Conversação</div>
+      <div class="subject-pill" onclick="setSubject(this,'grammar')">📝 Gramática</div>
+      <div class="subject-pill" onclick="setSubject(this,'vocab')">📚 Vocabulário</div>
+      <div class="subject-pill" onclick="setSubject(this,'pronunciation')">🗣️ Pronúncia</div>
+      <div class="subject-pill" onclick="setSubject(this,'writing')">✍️ Escrita</div>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="msg-row">
+        <div class="msg-avatar">🤖</div>
+        <div class="msg-bubble ai">Olá! Sou o Alex, o teu tutor de inglês com IA. Como posso ajudar-te hoje? Podes escrever em português ou inglês! 🎓</div>
+      </div>
+    </div>
+    <div class="chat-input-wrap">
+      <textarea id="chat-input" placeholder="Escreve aqui... (português ou inglês)" rows="1" onkeydown="handleChatKey(event)"></textarea>
+      <button class="chat-send-btn" onclick="sendChatMessage()" id="send-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- PROGRESS TAB -->
+  <div id="tab-progress" class="tab-section">
+    <div class="progress-hero">
+      <div class="ph-top">
+        <div class="ph-avatar">👤</div>
+        <div class="ph-info">
+          <h2 id="prog-name">Estudante</h2>
+          <p>Estudante · Excelência</p>
+          <div class="level-badge">⭐ Nível <span id="prog-level">B1</span> — Intermediate</div>
+        </div>
+      </div>
+      <div class="ph-stats-row">
+        <div class="ph-stat"><div class="ps-val" id="prog-xp">0</div><div class="ps-lbl">XP Total</div></div>
+        <div class="ph-stat"><div class="ps-val" id="prog-streak">0</div><div class="ps-lbl">Dias Streak</div></div>
+        <div class="ph-stat"><div class="ps-val">248</div><div class="ps-lbl">Palavras</div></div>
+      </div>
+    </div>
+    <div class="section-hdr"><h2>Habilidades</h2></div>
+    <div class="skills-section">
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">📝 Gramática</span><span class="skill-pct">65%</span></div><div class="skill-bar"><div class="skill-fill" style="width:65%;background:linear-gradient(90deg,var(--blue),var(--blue2))"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">📚 Vocabulário</span><span class="skill-pct">42%</span></div><div class="skill-bar"><div class="skill-fill" style="width:42%;background:linear-gradient(90deg,var(--green),var(--green2))"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">💬 Conversação</span><span class="skill-pct">28%</span></div><div class="skill-bar"><div class="skill-fill" style="width:28%;background:linear-gradient(90deg,var(--purple),#b197fc)"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">✍️ Escrita</span><span class="skill-pct">51%</span></div><div class="skill-bar"><div class="skill-fill" style="width:51%;background:linear-gradient(90deg,var(--coral),#ffa8a8)"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">🎧 Listening</span><span class="skill-pct">18%</span></div><div class="skill-bar"><div class="skill-fill" style="width:18%;background:linear-gradient(90deg,var(--gold),#ffe066)"></div></div></div>
+    </div>
+    <div class="section-hdr"><h2>Conquistas</h2></div>
+    <div class="badges-grid">
+      <div class="badge-item"><div class="bi-icon">🔥</div><h4>7 Dias Streak</h4></div>
+      <div class="badge-item"><div class="bi-icon">📖</div><h4>100 Palavras</h4></div>
+      <div class="badge-item"><div class="bi-icon">🧠</div><h4>Gramática I</h4></div>
+      <div class="badge-item"><div class="bi-icon">💬</div><h4>1ª Conversa</h4></div>
+      <div class="badge-item locked"><div class="bi-icon">🏆</div><h4>Módulo A1</h4></div>
+      <div class="badge-item locked"><div class="bi-icon">⭐</div><h4>500 Palavras</h4></div>
+      <div class="badge-item locked"><div class="bi-icon">📜</div><h4>Certificado</h4></div>
+      <div class="badge-item locked"><div class="bi-icon">🚀</div><h4>Nível B1</h4></div>
+    </div>
+  </div>
+
+  <!-- RANKING TAB -->
+  <div id="tab-ranking" class="tab-section">
+    <div class="ranking-hero">
+      <h2>🏆 Ranking Semanal</h2>
+      <p>Top estudantes da Excelência esta semana</p>
+    </div>
+    <div class="podium">
+      <div class="podium-place second">
+        <div class="podium-avatar" style="background:linear-gradient(135deg,#adb5bd,#868e96)">👩</div>
+        <div class="podium-name">Maria S.</div><div class="podium-xp">2,180 XP</div>
+        <div class="podium-block">2</div>
+      </div>
+      <div class="podium-place first">
+        <div class="podium-avatar" style="background:linear-gradient(135deg,#ffd43b,#f59f00)">👦</div>
+        <div class="podium-name">João M.</div><div class="podium-xp">3,450 XP</div>
+        <div class="podium-block">1</div>
+      </div>
+      <div class="podium-place third">
+        <div class="podium-avatar" style="background:linear-gradient(135deg,#cd7f32,#a0522d)">👧</div>
+        <div class="podium-name">Ana C.</div><div class="podium-xp">1,920 XP</div>
+        <div class="podium-block">3</div>
+      </div>
+    </div>
+    <div class="ranking-list">
+      <div class="rank-item"><div class="rank-num">4</div><div class="rank-avatar">👦</div><div class="rank-info"><h4>Pedro L.</h4><p>A2 · 12 dias streak</p></div><div class="rank-xp">1,760 XP</div></div>
+      <div class="rank-item"><div class="rank-num">5</div><div class="rank-avatar">👩</div><div class="rank-info"><h4>Luísa M.</h4><p>B1 · 5 dias streak</p></div><div class="rank-xp">1,580 XP</div></div>
+      <div class="rank-item me"><div class="rank-num" style="color:var(--blue)">6</div><div class="rank-avatar" style="background:linear-gradient(135deg,var(--blue),var(--purple))">👤</div><div class="rank-info"><h4 id="rank-my-name">Tu</h4><p id="rank-my-level">B1 · 7 dias streak 🔥</p></div><div class="rank-xp" style="color:var(--blue)" id="rank-my-xp">0 XP</div></div>
+      <div class="rank-item"><div class="rank-num">7</div><div class="rank-avatar">👦</div><div class="rank-info"><h4>Carlos T.</h4><p>A2 · 3 dias streak</p></div><div class="rank-xp">1,090 XP</div></div>
+      <div class="rank-item"><div class="rank-num">8</div><div class="rank-avatar">👧</div><div class="rank-info"><h4>Sofia R.</h4><p>A1 · 1 dia streak</p></div><div class="rank-xp">820 XP</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav" id="bottom-nav" style="display:none">
+  <div class="nav-item active" id="nav-home" onclick="switchTab('home')">
+    <div class="nav-icon">🏠</div><div class="nav-label">Início</div>
+  </div>
+  <div class="nav-item" id="nav-progress" onclick="switchTab('progress')">
+    <div class="nav-icon">📊</div><div class="nav-label">Progresso</div>
+  </div>
+  <div class="nav-center-btn" onclick="switchTab('chat')">🤖</div>
+  <div class="nav-item" id="nav-ranking" onclick="switchTab('ranking')">
+    <div class="nav-icon">🏆</div><div class="nav-label">Ranking</div>
+  </div>
+  <div class="nav-item" id="nav-profile" onclick="switchTab('progress')">
+    <div class="nav-icon">👤</div><div class="nav-label">Perfil</div>
+  </div>
+</div>
+
+<!-- EXERCISE MODAL -->
+<div class="modal-overlay" id="ex-modal" onclick="closeExercise(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-inner">
+      <div class="ex-type" id="ex-type">GRAMÁTICA ✨IA</div>
+      <div class="ex-q" id="ex-question">A carregar...</div>
+      <div class="ex-options" id="ex-options"></div>
+      <div class="ex-feedback" id="ex-feedback">
+        <h4 id="fb-title"></h4>
+        <p id="fb-body"></p>
+      </div>
+      <button class="ex-next-btn" id="ex-next" onclick="nextExercise()">Próxima Pergunta →</button>
+    </div>
+  </div>
+</div>
+
+<!-- XP TOAST -->
+<div class="xp-toast" id="xp-toast">+20 XP 🎉</div>
+
+<script>
+// ══════════════════════════════
+// CONFIG
+// ══════════════════════════════
+const GEMINI_API_KEY = 'AIzaSyAklWMbWfTnKOgHcMKAZwqDzUZNmgfKHiE';
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+// ══════════════════════════════
+// STATE
+// ══════════════════════════════
+let state = {
+  name: 'Estudante',
+  level: 'B1',
+  xp: 0,
+  xpMax: 2000,
+  streak: 7,
+  coins: 340,
+  currentSubject: 'general',
+  chatHistory: []
+};
+
+// ══════════════════════════════
+// NAVIGATION
+// ══════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+}
+
+function goToLevelSelect(){ showScreen('level'); }
+
+function selectLevel(code, name){
+  state.level = code;
+  document.querySelectorAll('.level-card').forEach(c=>c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  setTimeout(()=>{
+    showScreen('app');
+    document.getElementById('bottom-nav').style.display='flex';
+    updateUI();
+  }, 300);
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const el = document.getElementById('tab-'+tab);
+  if(el) el.classList.add('active');
+  const nav = document.getElementById('nav-'+tab);
+  if(nav) nav.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════
+// UI UPDATE
+// ══════════════════════════════
+function updateUI(){
+  document.getElementById('xp-val').textContent = state.xp.toLocaleString();
+  document.getElementById('streak-val').textContent = state.streak;
+  document.getElementById('coins-val').textContent = state.coins;
+  document.getElementById('xp-bar').style.width = Math.min((state.xp/state.xpMax*100),100)+'%';
+  document.getElementById('xp-cur').textContent = state.xp+' XP';
+  document.getElementById('xp-max').textContent = state.xpMax+' XP';
+  document.getElementById('hero-name').textContent = state.name;
+  document.getElementById('streak-banner-val').textContent = state.streak;
+  document.getElementById('prog-name').textContent = state.name;
+  document.getElementById('prog-xp').textContent = state.xp.toLocaleString();
+  document.getElementById('prog-streak').textContent = state.streak;
+  document.getElementById('prog-level').textContent = state.level;
+  document.getElementById('rank-my-name').textContent = 'Tu — '+state.name;
+  document.getElementById('rank-my-level').textContent = state.level+' · '+state.streak+' dias streak 🔥';
+  document.getElementById('rank-my-xp').textContent = state.xp.toLocaleString()+' XP';
+}
+
+function addXP(amount){
+  state.xp += amount;
+  updateUI();
+  showToast('+'+amount+' XP 🎉');
+}
+
+function showToast(msg){
+  const t = document.getElementById('xp-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// ══════════════════════════════
+// CHAT — GEMINI DIRECTO
+// ══════════════════════════════
+function setSubject(el, subject){
+  document.querySelectorAll('.subject-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  state.currentSubject = subject;
+}
+
+function handleChatKey(e){
+  if(e.key === 'Enter' && !e.shiftKey){
+    e.preventDefault();
+    sendChatMessage();
+  }
+}
+
+async function sendChatMessage(){
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if(!text) return;
+
+  const btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  input.value = '';
+  input.style.height = 'auto';
+
+  appendMessage('user', text);
+  state.chatHistory.push({ role:'user', parts:[{text}] });
+
+  const typing = appendTyping();
+
+  const subjectMap = {
+    general: 'conversação geral em inglês',
+    grammar: 'gramática inglesa',
+    vocab: 'vocabulário inglês',
+    pronunciation: 'pronúncia inglesa',
+    writing: 'escrita em inglês'
+  };
+
+  const systemContext = `És o Alex, tutor de inglês da plataforma Excelência AI English, feita para estudantes angolanos. 
+O estudante está no nível ${state.level}. Tópico actual: ${subjectMap[state.currentSubject] || 'inglês geral'}.
+Responde sempre de forma amigável, educativa e motivadora. 
+Podes usar português para explicar conceitos, mas incentiva sempre a praticar em inglês.
+Corrige erros gentilmente e dá exemplos práticos. Respostas curtas e claras (máximo 3 parágrafos).`;
+
+  try {
+    const messages = [
+      { role:'user', parts:[{text: systemContext + '\n\nInício da conversa.'}] },
+      { role:'model', parts:[{text:'Olá! Sou o Alex, o teu tutor de inglês. Como posso ajudar-te hoje?'}] },
+      ...state.chatHistory
+    ];
+
+    const res = await fetch(GEMINI_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        contents: messages,
+        generationConfig:{ temperature:0.7, maxOutputTokens:500 }
+      })
+    });
+
+    if(!res.ok) throw new Error('API error '+res.status);
+    const data = await res.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Desculpa, não consegui responder. Tenta novamente.';
+
+    typing.remove();
+    appendMessage('ai', reply);
+    state.chatHistory.push({ role:'model', parts:[{text:reply}] });
+    addXP(5);
+
+  } catch(err){
+    typing.remove();
+    appendMessage('ai', '⚠️ Erro de ligação. Verifica a tua internet e tenta novamente.');
+    console.error(err);
+  }
+
+  btn.disabled = false;
+}
+
+function appendMessage(role, text){
+  const msgs = document.getElementById('chat-messages');
+  const row = document.createElement('div');
+  row.className = 'msg-row' + (role==='user'?' user':'');
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar' + (role==='user'?' user-av':'');
+  avatar.textContent = role==='user'?'👤':'🤖';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble '+role;
+  bubble.textContent = text;
+  row.appendChild(avatar);
+  row.appendChild(bubble);
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+  return row;
+}
+
+function appendTyping(){
+  const msgs = document.getElementById('chat-messages');
+  const row = document.createElement('div');
+  row.className = 'typing-row';
+  row.innerHTML = `<div class="msg-avatar">🤖</div><div class="typing-dots-wrap"><span></span><span></span><span></span></div>`;
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+  return row;
+}
+
+// ══════════════════════════════
+// EXERCISES — GEMINI DIRECTO
+// ══════════════════════════════
+let currentExSet = [];
+let currentExIdx = 0;
+let answered = false;
+
+async function openExercise(type){
+  currentExIdx = 0;
+  answered = false;
+
+  document.getElementById('ex-modal').classList.add('open');
+  document.getElementById('ex-type').textContent = type==='vocab'?'VOCABULÁRIO ✨IA':'GRAMÁTICA ✨IA';
+  document.getElementById('ex-question').textContent = '🤖 A IA está a gerar exercícios para o nível '+state.level+'...';
+  document.getElementById('ex-options').innerHTML = '<div style="text-align:center;padding:24px;color:var(--gray600);font-size:13px;">⏳ A preparar perguntas personalizadas...</div>';
+  document.getElementById('ex-feedback').className = 'ex-feedback';
+  document.getElementById('ex-next').className = 'ex-next-btn';
+
+  try {
+    const exercises = await generateExercisesWithGemini(type, state.level);
+    currentExSet = exercises;
+    renderExercise();
+  } catch(err){
+    console.error(err);
+    document.getElementById('ex-question').textContent = '⚠️ Erro ao gerar exercícios.';
+    document.getElementById('ex-options').innerHTML = '<div style="text-align:center;padding:24px;color:var(--coral);">Verifica a tua ligação à internet e tenta novamente.</div>';
+  }
+}
+
+async function generateExercisesWithGemini(type, level){
+  const typeLabel = type === 'vocab' ? 'vocabulário' : 'gramática';
+  const prompt = `Gera exactamente 5 perguntas de múltipla escolha de ${typeLabel} de inglês para nível ${level}.
+Responde APENAS com JSON válido, sem texto extra, sem markdown, sem \`\`\`.
+Formato exacto:
+[
+  {
+    "q": "pergunta aqui",
+    "opts": ["opção A", "opção B", "opção C", "opção D"],
+    "correct": 0,
+    "explain": "explicação curta em português"
+  }
+]
+"correct" é o índice (0-3) da resposta correcta.
+Nível ${level}: ${level==='A1'?'vocabulário básico, presente simples':level==='A2'?'passado simples, vocabulário do dia-a-dia':level==='B1'?'tempos verbais, vocabulário intermédio':level==='B2'?'gramática avançada, expressões idiomáticas':''}.
+Faz perguntas práticas e relevantes para estudantes angolanos.`;
+
+  const res = await fetch(GEMINI_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      contents:[{ role:'user', parts:[{text:prompt}] }],
+      generationConfig:{ temperature:0.5, maxOutputTokens:1200 }
+    })
+  });
+
+  if(!res.ok) throw new Error('Gemini API error: '+res.status);
+  const data = await res.json();
+  let raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+  // limpar possíveis backticks
+  raw = raw.replace(/```json/gi,'').replace(/```/g,'').trim();
+
+  const exercises = JSON.parse(raw);
+  if(!Array.isArray(exercises) || exercises.length === 0) throw new Error('Resposta inválida da IA');
+  return exercises;
+}
+
+function renderExercise(){
+  const ex = currentExSet[currentExIdx];
+  const total = currentExSet.length;
+  document.getElementById('ex-question').textContent = `(${currentExIdx+1}/${total}) ${ex.q}`;
+  const optEl = document.getElementById('ex-options');
+  optEl.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  ex.opts.forEach((opt,i)=>{
+    const btn = document.createElement('div');
+    btn.className = 'ex-opt';
+    btn.innerHTML = `<div class="ex-opt-letter">${letters[i]}</div>${opt}`;
+    btn.onclick = ()=>checkAnswer(i);
+    optEl.appendChild(btn);
+  });
+  document.getElementById('ex-feedback').className = 'ex-feedback';
+  document.getElementById('ex-next').className = 'ex-next-btn';
+  answered = false;
+}
+
+function checkAnswer(idx){
+  if(answered) return;
+  answered = true;
+  const ex = currentExSet[currentExIdx];
+  const opts = document.querySelectorAll('.ex-opt');
+  const fb = document.getElementById('ex-feedback');
+  const isCorrect = idx === ex.correct;
+  opts[idx].classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect) opts[ex.correct].classList.add('correct');
+  fb.className = 'ex-feedback show '+(isCorrect?'correct-fb':'wrong-fb');
+  document.getElementById('fb-title').textContent = isCorrect?'✅ Correcto!':'❌ Errado';
+  document.getElementById('fb-body').textContent = ex.explain;
+  document.getElementById('ex-next').className = 'ex-next-btn show';
+  if(isCorrect) addXP(10);
+}
+
+function nextExercise(){
+  currentExIdx++;
+  if(currentExIdx >= currentExSet.length){
+    closeExercise(null, true);
+    showToast('Módulo completo! +50 XP 🏆');
+    state.xp += 50;
+    updateUI();
+    return;
+  }
+  renderExercise();
+}
+
+function closeExercise(e, force){
+  if(force || (e && e.target === document.getElementById('ex-modal'))){
+    document.getElementById('ex-modal').classList.remove('open');
+  }
+}
+</script>
+</body>
+</html>
